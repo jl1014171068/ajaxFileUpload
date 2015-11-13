@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form id="form">
+    <input type="file" name="file" id="file">
+    <input type="text" name="text" id="text">
+    <input type="button" id="btn-form" value="form">
+    <input type="button" id="btn-file" value="file">
+</form>
+<div id="upload"></div>
+<div id="download"></div>
+<div id="response"></div>
+</body>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="ajaxFileUpload.js"></script>
+<script>
+    var $btnForm = $('#btn-form'),
+            $btnFile = $('#btn-file'),
+            $upload = $('#upload'),
+            $download = $('#download'),
+            $response = $('#response');
+    $btnFile.on('click', function () {
+        new AjaxSubmit('file', '', {
+            type: AjaxSubmit.TEXT,
+            enctype: AjaxSubmit.BLOB,
+            success: function (data) {
+                $response.text(data);
+            },
+            onUploadLoadStart: function () {
+                $upload.text('upload 0%');
+            },
+            onUploadLoadEnd: function () {
+                $upload.text('upload 100%');
+            },
+            onUploadProgress: function (e) {
+                console.log(e);
+                $upload.text('upload total ' + e.total + ', loaded ' + e.loaded);
+            },
+            onLoadStart: function () {
+                $download.text('download 0%');
+            },
+            onLoadEnd: function () {
+                $download.text('download 100%');
+            },
+            onProgress: function (e) {
+                $download.text('download total ' + e.total + ', loaded ' + e.loaded);
+            }
+        }).send();
+    })
+</script>
+</html>
