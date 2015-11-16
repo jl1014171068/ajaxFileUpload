@@ -179,7 +179,9 @@
             if (xhr.readyState === 4) {
                 if (xhr.status < 300) {
                     if (options.type === responseTypes.XML) {
-                        response = (new DOMParser()).parseFromString(xhr.response || xhr.responseText, 'text/xml');
+                        response = xhr.responseXML
+                            ? xhr.responseXML
+                            : (new DOMParser()).parseFromString(xhr.response || xhr.responseText, 'text/xml');
                     } else if (options.type === responseTypes.JSON) {
                         response = JSON.parse(xhr.response || xhr.responseText);
                     }
@@ -204,4 +206,4 @@
             return this.length > 0 ? new AjaxSubmit(this.get(0), url, settings, type).send() : this;
         };
     }
-})(window, document, window.Zepto || window.jQuery);
+})(window, document, window.Zepto || window.jQuery || undefined);
